@@ -21,3 +21,5 @@ and run `npm run start` or `npm run dev`. Currently configured on port **8080**
 # Common troubleshoot
 Install node packages `npm install`
 Restore Nuget Packages if backend fails.
+
+You might also need .Net Core SDK
