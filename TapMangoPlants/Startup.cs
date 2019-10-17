@@ -86,7 +86,7 @@ namespace TapMangoPlants
                 new Plant
                 {
                     Id = "3",
-                    WaterLevel = 0,
+                    WaterLevel = 1,
                     LastWateredTime = DateTime.Now
                 },
                 new Plant

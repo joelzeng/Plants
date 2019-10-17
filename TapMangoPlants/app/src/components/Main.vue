@@ -1,11 +1,13 @@
 <template>
   <div>
-    <v-flex :key="item.id" v-for="item in plants">
-        {{ item }}
-        <Plant :waterlevel="item.waterLevel"
-               :lastWateredTime="item.lastWateredTime"/>
-               <v-btn primary text>Water</v-btn>
-    </v-flex>
+    <h1>TapPlants</h1>
+    <v-layout class="main">
+      <v-flex :key="item.id" v-for="item in plants">
+          <!-- {{ item }} -->
+          <Plant :waterLevel="item.waterLevel"
+                :lastWateredTime="item.lastWateredTime"/>
+      </v-flex>
+    </v-layout>
   </div>
 </template>
 
@@ -35,9 +37,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
+.main {
+  margin-top: 10vh;
 }
+
 ul {
   list-style-type: none;
   padding: 0;
