@@ -1,7 +1,7 @@
 # Plants
 
-The Project has been dont with .Net Core as my local workstation is MacOSX.
-Front-End is developed with VueJS and custom assets made by myself.
+The Project has been done with .Net Core as my local workstation is MacOSX.
+Front-End was developed with VueJS and custom assets were made by myself.
 
 Sample: 
 ![Alt text](./sample.png?raw=true "Sample")
