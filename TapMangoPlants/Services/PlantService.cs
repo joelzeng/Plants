@@ -21,6 +21,10 @@ namespace TapMangoPlants.Services
         {
             return await _plantRepository.GetAllPlantsAsync().ConfigureAwait(false);
         }
-        
+
+        public Plant WaterPlant(string id)
+        {
+            return _plantRepository.WaterPlant(id);
+        }
     }
 }

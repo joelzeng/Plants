@@ -7,5 +7,7 @@ namespace TapMangoPlants.Repository
     public interface IPlantRepository
     {
         Task<IList<Plant>> GetAllPlantsAsync();
+
+        Plant WaterPlant(string id);
     }
 }

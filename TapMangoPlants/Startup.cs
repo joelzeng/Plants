@@ -85,13 +85,13 @@ namespace TapMangoPlants
                 {
                     Id = "2",
                     WaterLevel = 0,
-                    LastWateredTime = DateTime.Now
+                    LastWateredTime = DateTime.Now.AddHours(-2)
                 },
                 new Plant
                 {
                     Id = "3",
                     WaterLevel = 1,
-                    LastWateredTime = DateTime.Now
+                    LastWateredTime = DateTime.Now.AddHours(-1)
                 },
                 new Plant
                 {

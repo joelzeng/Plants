@@ -21,6 +21,15 @@ namespace TapMangoPlants.Repository
         {
             return await _context.Plants.ToListAsync().ConfigureAwait(false);
         }
+
+        public Plant WaterPlant(string id)
+        {
+            var plant = _context.Plants.Find(id);
+            plant.LastWateredTime = DateTime.Now;
+            _context.Plants.Update(plant);
+            _context.SaveChanges();
+            return plant;
+        }
     }
 }
 

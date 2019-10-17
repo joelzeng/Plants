@@ -32,6 +32,20 @@ namespace TapMangoPlants.Controllers
             return plants.Select(p => new PlantViewModel(p)).ToList() ;
         }
 
+        [HttpPost]
+        [Route("WaterPlant")]
+        public PlantViewModel WaterPlant(IdViewModel idViewModel)
+        {
+            var plant = _plantService.WaterPlant(idViewModel.Id);
+            return new PlantViewModel(plant);
+        }
+
+        public class IdViewModel
+        {
+            public string Id { get; set; }
+        }
+
+
         public class PlantViewModel
         {
             public PlantViewModel(Plant plant)

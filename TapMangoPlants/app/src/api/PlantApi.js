@@ -5,7 +5,7 @@ export async function getPlants () {
   return data
 }
 
-export async function waterPlant(id) {
+export async function waterPlant (id) {
   const { data } = await axios.post('https://localhost:5001/api/plant/WaterPlant', { Id: id })
   return data
 }
