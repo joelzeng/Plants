@@ -15,7 +15,7 @@ In order to determine when a plant needs to be watered, i opted to check for its
 - For the front end, it can be ran through the terminal. The front end is located inside the [rootProjectFolder]/app
 and run `npm run start` or `npm run dev`. Currently configured on port **8080**
 
-* Note: State management is implemented with **EntityFrameworkCore.InMemory** Package.
+* Note: Db is implemented with **EntityFrameworkCore.InMemory**.
   The application always starts with a hard coded state that gets loaded to memory. As long as the backend keeps running the states should be updated.
 
 # Common troubleshoot
