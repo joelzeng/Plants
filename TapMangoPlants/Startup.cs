@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using TapMangoPlants.Context;
 using TapMangoPlants.Model;
+using TapMangoPlants.Services;
+using TapMangoPlants.Repository;
 
 namespace TapMangoPlants
 {
@@ -35,6 +37,8 @@ namespace TapMangoPlants
                     });
             });
             services.AddDbContext<ApiContext>(opt => opt.UseInMemoryDatabase("MemoryDb"));
+            services.AddScoped<IPlantService, PlantService>();
+            services.AddScoped<IPlantRepository, PlantRepository>();
             services.AddControllers();
         }
 

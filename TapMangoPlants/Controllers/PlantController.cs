@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TapMangoPlants.Context;
 using TapMangoPlants.Model;
+using TapMangoPlants.Services;
 
 namespace TapMangoPlants.Controllers
 {
@@ -16,18 +17,33 @@ namespace TapMangoPlants.Controllers
     {
 
 
-        private readonly ApiContext _context;
+        private readonly IPlantService _plantService;
 
-        public PlantController(ApiContext apiContext)
+        public PlantController(IPlantService plantService)
         {
-            _context = apiContext;
+            _plantService = plantService;
         }
 
-        [HttpGet]
-        public async Task<IList<Plant>> Get()
+        [HttpPost] 
+        [Route("GetAll")]
+        public async Task<IList<PlantViewModel>> GetAll()
         {
-            return await _context.Plants.ToListAsync().ConfigureAwait(false);
+            var plants = await _plantService.GetAllPlantsAsync().ConfigureAwait(false);
+            return plants.Select(p => new PlantViewModel(p)).ToList() ;
         }
 
+        public class PlantViewModel
+        {
+            public PlantViewModel(Plant plant)
+            {
+                Id = plant.Id;
+                LastTimeWatered = plant.LastWateredTime;
+            }
+
+            public string Id { get; set; }
+
+            public DateTime LastTimeWatered { get; set; }
+        }
+        
     }
 }
