@@ -3,9 +3,10 @@
     <h1>TapPlants</h1>
     <v-layout class="main">
       <v-flex :key="item.id" v-for="item in plants">
-          <!-- {{ item }} -->
-          <Plant :waterLevel="item.waterLevel"
-                :lastWateredTime="item.lastWateredTime"/>
+          <Plant :id="item.id"
+                 :waterLevel="item.waterLevel"
+                 :lastTimeWatered="item.lastTimeWatered"
+                 @updatePlant="onUpdatePlant"/>
       </v-flex>
     </v-layout>
   </div>
@@ -22,6 +23,12 @@ export default {
   data () {
     return {
       plants: []
+    }
+  },
+  methods: {
+    onUpdatePlant (newPlant) {
+      var plant = this.plants.find(p => p.id === newPlant.id)
+      plant.lastTimeWatered = newPlant.lastTimeWatered
     }
   },
   async mounted () {

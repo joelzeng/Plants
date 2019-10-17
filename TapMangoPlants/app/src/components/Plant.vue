@@ -7,21 +7,28 @@
       <h2>Really Thirsty!</h2>
     </div>
     <img v-if="isWatering" class="plant-vase-img" src="../assets/flower_water.png" >
-    <img v-else-if="waterLevel === 1" class="plant-vase-img" src="../assets/flower_alive.png">
+    <img v-else-if="!needsWater" class="plant-vase-img" src="../assets/flower_alive.png">
     <img v-else class="plant-vase-img" src="../assets/flower_dead.png">
     <img class="plant-vase-img" src="../assets/vase.png">
     <div>
-      <v-btn v-if="!isWatering" color="primary" dark @click="waterFlower">Water</v-btn>
+      <v-btn :disabled="!needsWater || justWatered" v-if="!isWatering" color="primary" dark @click="waterFlower">Water</v-btn>
       <v-btn v-if="isWatering" color="red" @click="cancelWatering">Cancel</v-btn>
     </div>
   </v-flex>
 </template>
 
 <script>
+import * as PlantApi from '@/api/PlantApi'
+
+var ONE_HOUR = 60 * 60 * 1000
+var SIX_HOURS =  6 * ONE_HOUR
 
 export default {
   props: {
-    lastWateredTime: {
+    id: {
+      type: String
+    },
+    lastTimeWatered: {
       type: String
     },
     waterLevel: {
@@ -30,7 +37,7 @@ export default {
   },
   data () {
     return {
-      watering: false
+      watering: null
     }
   },
   computed: {
@@ -38,33 +45,47 @@ export default {
       if (this.watering) {
         return 'Watering Plant'
       }
-      return this.waterLevel > 0 ? 'Happy Plant' : 'Needs Water'
+      return this.needsWater ? 'Needs Water' : 'Happy Plant'
+    },
+    needsWater () {
+      const now = new Date
+      const wateredTime = new Date(this.lastTimeWatered)
+      return now - wateredTime > ONE_HOUR
     },
     isWatering () {
-      return this.waterLevel === 0 && this.watering
+      return this.watering != null
     },
     isOverSixHours () {
-      // there is a bug for different dates but you get the gist
-      if (this.waterLevel === 1) {
-        return false
-      }
-      const now = new Date()
-      const wateredTime = new Date(this.lastWateredTime)
-      if (wateredTime.getDate() < now.getDate()) {
-        return true
-      }
-      return now.getHours() - wateredTime.getHours() > 6
+      const now = new Date
+      const wateredTime = new Date(this.lastTimeWatered)
+      return now - wateredTime > SIX_HOURS
+    },
+    justWatered () {
+      const now = new Date
+      const wateredTime = new Date(this.lastTimeWatered)
+      return now - wateredTime < 30 * 1000
     }
   },
   methods: {
     waterFlower () {
-      if (this.waterLevel === 0) {
-        this.watering = true
-        setTimeout(() => { this.watering = false }, 10000)
+      // this.watering = setTimeout(() => {
+      //   this.updateWateringPlant()
+      // }, 10000)
+      this.updateWateringPlant()
+    },
+    async updateWateringPlant () {
+      try {
+        const newPlant = await PlantApi.waterPlant(this.id)
+        this.$emit('updatePlant', newPlant)
+      } catch (err) {
+        console.log(err)
+      } finally {
+        this.cancelWatering()
       }
     },
     cancelWatering () {
-      this.watering = false
+      clearTimeout(this.watering)
+      this.watering = null
     }
   }
 }
