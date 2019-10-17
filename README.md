@@ -11,7 +11,7 @@ In order to determine when a plant needs to be watered, i opted to check for its
 
 # Launch Instructions
 
-- The backend has to be ran. Currently configured on port **5001**. On any visual studios (I used Visual Studio Mac)
+- The backend has to be built and ran. Currently configured on port **5001**. On any visual studios (I used Visual Studio Mac)
 - For the front end, it can be ran through the terminal. The front end is located inside the [rootProjectFolder]/app
 and run `npm run start` or `npm run dev`. Currently configured on port **8080**
 
@@ -20,3 +20,4 @@ and run `npm run start` or `npm run dev`. Currently configured on port **8080**
 
 # Common troubleshoot
 Install node packages `npm install`
+Restore Nuget Packages if backend fails.
