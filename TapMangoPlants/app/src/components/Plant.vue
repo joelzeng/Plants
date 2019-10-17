@@ -1,7 +1,10 @@
 <template>
   <v-flex>
-    <div>
+    <div v-if="!isOverSixHours">
       <h2>{{ waterStatus }}</h2>
+    </div>
+    <div class="need-water" v-else>
+      <h2>Really Thirsty!</h2>
     </div>
     <img v-if="isWatering" class="plant-vase-img" src="../assets/flower_water.png" >
     <img v-else-if="waterLevel === 1" class="plant-vase-img" src="../assets/flower_alive.png">
@@ -39,6 +42,18 @@ export default {
     },
     isWatering () {
       return this.waterLevel === 0 && this.watering
+    },
+    isOverSixHours () {
+      // there is a bug for different dates but you get the gist
+      if (this.waterLevel === 1) {
+        return false
+      }
+      const now = new Date()
+      const wateredTime = new Date(this.lastWateredTime)
+      if (wateredTime.getDate() < now.getDate()) {
+        return true
+      }
+      return now.getHours() - wateredTime.getHours() > 6
     }
   },
   methods: {
@@ -58,5 +73,8 @@ export default {
 <style>
 .plant-vase-img {
   width: 200px;
+}
+.need-water {
+  background: orange
 }
 </style>

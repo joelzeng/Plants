@@ -99,7 +99,7 @@ namespace TapMangoPlants
                 {
                     Id = "5",
                     WaterLevel = 0,
-                    LastWateredTime = DateTime.Now
+                    LastWateredTime = DateTime.Now.AddHours(-8)
                 },
             };
 
