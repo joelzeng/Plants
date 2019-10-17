@@ -1,15 +1,22 @@
 <template>
   <div>
-    <span :key="item.id" v-for="item in plants">
+    <v-flex :key="item.id" v-for="item in plants">
         {{ item }}
-    </span>
+        <Plant :waterlevel="item.waterLevel"
+               :lastWateredTime="item.lastWateredTime"/>
+               <v-btn primary text>Water</v-btn>
+    </v-flex>
   </div>
 </template>
 
 <script>
-import * as PlantApi from '../api/PlantApi'
+import * as PlantApi from '@/api/PlantApi'
+import Plant from '@/components/Plant'
 
 export default {
+  components: {
+    Plant
+  },
   data () {
     return {
       plants: []
@@ -17,7 +24,6 @@ export default {
   },
   async mounted () {
     try {
-      // const data = await this.$axios.get('https://localhost:5001/api/plant')
       const data = await PlantApi.getPlants()
       this.$set(this, 'plants', data)
     } catch (err) {
