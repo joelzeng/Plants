@@ -33,7 +33,7 @@ namespace TapMangoPlants
                 opt.AddPolicy(MyAllowSpecificOrigins,
                     builder =>
                     {
-                        builder.WithOrigins("http://localhost:8080");
+                        builder.WithOrigins("http://localhost:8080").AllowAnyMethod().AllowAnyHeader();
                     });
             });
             services.AddDbContext<ApiContext>(opt => opt.UseInMemoryDatabase("MemoryDb"));

@@ -11,7 +11,7 @@
     <img v-else class="plant-vase-img" src="../assets/flower_dead.png">
     <img class="plant-vase-img" src="../assets/vase.png">
     <div>
-      <v-btn :disabled="!needsWater || justWatered" v-if="!isWatering" color="primary" dark @click="waterFlower">Water</v-btn>
+      <v-btn :disabled="justWatered != null" v-if="!isWatering" color="primary" dark @click="waterFlower">Water</v-btn>
       <v-btn v-if="isWatering" color="red" @click="cancelWatering">Cancel</v-btn>
     </div>
   </v-flex>
@@ -21,7 +21,7 @@
 import * as PlantApi from '@/api/PlantApi'
 
 var ONE_HOUR = 60 * 60 * 1000
-var SIX_HOURS =  6 * ONE_HOUR
+var SIX_HOURS = 6 * ONE_HOUR
 
 export default {
   props: {
@@ -37,7 +37,8 @@ export default {
   },
   data () {
     return {
-      watering: null
+      watering: null,
+      justWatered: null
     }
   },
   computed: {
@@ -48,7 +49,7 @@ export default {
       return this.needsWater ? 'Needs Water' : 'Happy Plant'
     },
     needsWater () {
-      const now = new Date
+      const now = new Date()
       const wateredTime = new Date(this.lastTimeWatered)
       return now - wateredTime > ONE_HOUR
     },
@@ -56,27 +57,24 @@ export default {
       return this.watering != null
     },
     isOverSixHours () {
-      const now = new Date
+      const now = new Date()
       const wateredTime = new Date(this.lastTimeWatered)
       return now - wateredTime > SIX_HOURS
-    },
-    justWatered () {
-      const now = new Date
-      const wateredTime = new Date(this.lastTimeWatered)
-      return now - wateredTime < 30 * 1000
     }
   },
   methods: {
     waterFlower () {
-      // this.watering = setTimeout(() => {
-      //   this.updateWateringPlant()
-      // }, 10000)
-      this.updateWateringPlant()
+      if (this.needsWater) {
+        this.watering = setTimeout(() => {
+          this.updateWateringPlant()
+        }, 10000)
+      }
     },
     async updateWateringPlant () {
       try {
         const newPlant = await PlantApi.waterPlant(this.id)
         this.$emit('updatePlant', newPlant)
+        this.disableWaterButton()
       } catch (err) {
         console.log(err)
       } finally {
@@ -86,6 +84,12 @@ export default {
     cancelWatering () {
       clearTimeout(this.watering)
       this.watering = null
+    },
+    disableWaterButton () {
+      this.justWatered = setTimeout(() => {
+        clearTimeout(this.justWatered)
+        this.justWatered = null
+      }, 30000)
     }
   }
 }
